@@ -9,6 +9,8 @@ const Heading = styled.div`
 
 const uploadFilmUrl = 'http://localhost:8200/film/upload';
 const processFilmUrl = 'http://localhost:8200/film/process';
+const uploadTvUrl = 'http://localhost:8200/tv_show/upload';
+const processTvUrl = 'http://localhost:8200/tv_show/process';
 
 const FileUploader = ({headingText}) => {
 
@@ -20,11 +22,17 @@ const FileUploader = ({headingText}) => {
 
     const onFileChange = (event) => {
         let file = event.target.files[0];
+        let uploadUrl;
+        switch (headingText) {
+            case 'Film': uploadUrl = uploadFilmUrl; break;
+            case 'TV Show': uploadUrl = uploadTvUrl; break;
+            default: uploadUrl = uploadFilmUrl; break;
+        }
         const formData = new FormData();
 
         formData.append('file', file, file.name);
         console.log('Form Data', formData, file);
-        axios.post(uploadFilmUrl, formData)
+        axios.post(uploadUrl, formData)
             .then(
                 (succ) => {
                     console.log('hooray', succ);
@@ -39,8 +47,14 @@ const FileUploader = ({headingText}) => {
     };
 
     const onFileUpload = () => {
+        let processUrl;
+        switch (headingText) {
+            case 'Film': processUrl = processFilmUrl; break;
+            case 'TV Show': processUrl = processTvUrl; break;
+            default: processUrl = processFilmUrl; break;
+        }
         console.log('submit', jobIds);
-        axios.patch(processFilmUrl, { jobIds })
+        axios.patch(processUrl, { jobIds })
             .then(console.log, console.log);
     }
 
