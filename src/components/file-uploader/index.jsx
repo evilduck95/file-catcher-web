@@ -9,8 +9,8 @@ const Heading = styled.div`
 
 const uploadFilmUrl = 'http://localhost:8200/film/upload';
 const processFilmUrl = 'http://localhost:8200/film/process';
-const uploadTvUrl = 'http://localhost:8200/tv_show/upload';
-const processTvUrl = 'http://localhost:8200/tv_show/process';
+const uploadTvUrl = 'http://localhost:8200/tv-show/upload';
+const processTvUrl = 'http://localhost:8200/tv-show/process';
 
 const FileUploader = ({headingText}) => {
 
