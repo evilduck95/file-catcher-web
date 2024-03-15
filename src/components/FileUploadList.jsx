@@ -41,9 +41,8 @@ const FileUploadList = () => {
     return (
         <FileUploadContainer>
             <div>Add files</div>
-            <FileListDisplay files={files} removeCallback={fileRemoved}/>
+            <FileListDisplay files={files} fileAddCallback={plusClicked} removeCallback={fileRemoved}/>
             <input type={'file'} id={'file-input'} ref={inputFile} onChange={fileAdded} style={{display: 'none'}}/>
-            <ImPlus className={'clickable-icon'} onClick={plusClicked} color={'lightgreen'}/>
         </FileUploadContainer>
     )
 

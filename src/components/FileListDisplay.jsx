@@ -26,14 +26,13 @@ const FileRow = styled.div`
 `;
 
 const Instruction = styled.div`
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    font-style: italic;
 `
 
-const FileListDisplay = ({files, removeCallback}) => {
+const FileListDisplay = ({files, fileAddCallback, removeCallback}) => {
     console.log('render list');
 
     const fileRemoved = (index) => {
@@ -43,8 +42,8 @@ const FileListDisplay = ({files, removeCallback}) => {
 
     return (
         <FilesListContainer>
-            {files?.length === 0 && <FileRow><Instruction>Drop files here (Coming Soon!)</Instruction></FileRow>}
-            {files.map((f, i) => <FileRow><div>{f.name}</div><ImCross className={'clickable-icon'} onClick={() => fileRemoved(i)}/></FileRow>)}
+            {files.map((f, i) => <FileRow style={{cursor: 'pointer'}}><div>{f.name}</div><ImCross className={'clickable-icon'} onClick={() => fileRemoved(i)}/></FileRow>)}
+            <FileRow style={{cursor: 'pointer'}} onClick={fileAddCallback}><Instruction>Drop files here (Coming Soon!) or click to select</Instruction></FileRow>
         </FilesListContainer>
     )
 };
