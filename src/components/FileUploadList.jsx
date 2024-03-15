@@ -1,8 +1,11 @@
 import React, {useEffect, useRef, useState} from "react";
 import FileListDisplay from "./FileListDisplay";
-import {Button} from "react-bootstrap";
 import {ImPlus} from "react-icons/im";
-import collapse from "bootstrap/js/src/collapse";
+import styled from "styled-components";
+
+const FileUploadContainer = styled.div`
+    margin: 10px;
+`;
 
 const FileUploadList = () => {
 
@@ -35,14 +38,13 @@ const FileUploadList = () => {
     };
 
     console.log('render uploader')
-
     return (
-        <div>
+        <FileUploadContainer>
             <div>Add files</div>
             <FileListDisplay files={files} removeCallback={fileRemoved}/>
             <input type={'file'} id={'file-input'} ref={inputFile} onChange={fileAdded} style={{display: 'none'}}/>
             <ImPlus className={'clickable-icon'} onClick={plusClicked} color={'lightgreen'}/>
-        </div>
+        </FileUploadContainer>
     )
 
 };

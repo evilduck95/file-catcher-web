@@ -3,11 +3,14 @@ import styled from "styled-components";
 import {ImCross} from "react-icons/im";
 
 const FilesListContainer = styled.div`
+    width: 400px;
+    min-height: 500px;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    align-items: center;
     padding-top: 10px;
     border: solid black 1px;
-    width: 400px;
 `;
 
 const FileRow = styled.div`
@@ -15,7 +18,7 @@ const FileRow = styled.div`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin: auto auto 10px;
+    margin-bottom: 10px;
     padding: 5px;
     text-align: center;
     width: 95%;
