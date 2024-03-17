@@ -58,15 +58,16 @@ const FileListDisplay = ({files, fileAddCallback, removeCallback}) => {
     const [draggingFile, setDraggingFile] = useState(false);
 
     useEffect(() => {
-        listContainerRef.current.addEventListener('dragover', handleDragOver);
-        listContainerRef.current.addEventListener('drop', handleDrop);
-        listContainerRef.current.addEventListener('dragenter', handleDragEnter);
-        listContainerRef.current.addEventListener('dragleave', handleDragLeave);
+        const current = listContainerRef.current;
+        current.addEventListener('dragover', handleDragOver);
+        current.addEventListener('drop', handleDrop);
+        current.addEventListener('dragenter', handleDragEnter);
+        current.addEventListener('dragleave', handleDragLeave);
         return () => {
-            listContainerRef.current.removeEventListener('dragover', handleDragOver);
-            listContainerRef.current.removeEventListener('drop', handleDrop);
-            listContainerRef.current.removeEventListener('dragenter', handleDragEnter);
-            listContainerRef.current.removeEventListener('dragleave', handleDragLeave);
+            current.removeEventListener('dragover', handleDragOver);
+            current.removeEventListener('drop', handleDrop);
+            current.removeEventListener('dragenter', handleDragEnter);
+            current.removeEventListener('dragleave', handleDragLeave);
         }
     }, []);
 
@@ -97,6 +98,7 @@ const FileListDisplay = ({files, fileAddCallback, removeCallback}) => {
     const handleDrop = (event) => {
         event.preventDefault();
         event.stopPropagation();
+        setDraggingFile(false);
         console.log('drop');
     };
 
