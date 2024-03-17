@@ -1,12 +1,13 @@
 import React, {useEffect, useRef, useState} from "react";
 import styled from "styled-components";
-import {ImCross} from "react-icons/im";
+import FileRow from "./FileRow";
+import {Button} from "react-bootstrap";
 
 const FilesListContainer = styled.div`
     // Parent styles to allow overlay to respect boundaries.
     float: left;
     position: relative;
-    
+
     width: 400px;
     min-height: 500px;
     display: flex;
@@ -17,23 +18,13 @@ const FilesListContainer = styled.div`
     border: solid black 1px;
 `;
 
-const FileRow = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    padding: 5px;
-    text-align: center;
-    width: 95%;
-    border: dashed black 1px;
-`;
 
 const Instruction = styled.div`
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-style: italic;
 `;
 
 const DragOverOverlay = styled.div`
@@ -50,7 +41,7 @@ const DragOverOverlay = styled.div`
     opacity: 25%;
 `;
 
-const FileListDisplay = ({files, fileAddCallback, removeCallback}) => {
+const FileListDisplay = ({files, chooseFileCallback, dropFileCallback, removeCallback}) => {
 
     const listContainerRef = useRef(null);
     const dragOverlayRef = useRef(null);
@@ -75,7 +66,6 @@ const FileListDisplay = ({files, fileAddCallback, removeCallback}) => {
         event.preventDefault();
         event.stopPropagation();
         if (event.target !== dragOverlayRef.current) {
-            console.log('enter');
             setDraggingFile(true);
         }
     };
@@ -84,7 +74,6 @@ const FileListDisplay = ({files, fileAddCallback, removeCallback}) => {
         event.preventDefault();
         event.stopPropagation();
         if (event.target === dragOverlayRef.current) {
-            console.log('leave');
             setDraggingFile(false);
         }
     }
@@ -92,14 +81,13 @@ const FileListDisplay = ({files, fileAddCallback, removeCallback}) => {
     const handleDragOver = (event) => {
         event.preventDefault();
         event.stopPropagation();
-        console.log('drag over');
     };
 
     const handleDrop = (event) => {
         event.preventDefault();
         event.stopPropagation();
         setDraggingFile(false);
-        console.log('drop');
+        dropFileCallback(event);
     };
 
     const fileRemoved = (index) => {
@@ -111,11 +99,12 @@ const FileListDisplay = ({files, fileAddCallback, removeCallback}) => {
         <FilesListContainer ref={listContainerRef}>
             {draggingFile && <DragOverOverlay ref={dragOverlayRef}>
             </DragOverOverlay>}
-            {files.map((f, i) => <FileRow style={{cursor: 'pointer'}}>
-                <div>{f.name}</div>
-                <ImCross className={'clickable-icon'} onClick={() => fileRemoved(i)}/></FileRow>)}
-            <FileRow style={{cursor: 'pointer'}} onClick={fileAddCallback}><Instruction>Drop files here (Coming
-                Soon!) or click to select</Instruction></FileRow>
+            {files.map((f, i) => (<FileRow key={i} index={i} file={f} removedCallback={fileRemoved}/>))}
+            <div className={'d-grid gap-2'}>
+                <Button onClick={chooseFileCallback} variant={'outline-primary'}>
+                    <Instruction>Drop files here (Coming Soon!) or click to select</Instruction>
+                </Button>
+            </div>
         </FilesListContainer>
     )
 };

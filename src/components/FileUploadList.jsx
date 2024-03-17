@@ -1,6 +1,5 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import FileListDisplay from "./FileListDisplay";
-import {ImPlus} from "react-icons/im";
 import styled from "styled-components";
 
 const FileUploadContainer = styled.div`
@@ -10,24 +9,29 @@ const FileUploadContainer = styled.div`
 const FileUploadList = () => {
 
     const [files, setFiles] = useState([]);
-    const inputFile = useRef(null);
+    const fileInputRef = useRef(null);
 
-    useEffect(() => {
-        console.log('Changed')
-    }, [files]);
-
-    const fileUpload = (key, file) => {
-    };
-
-    const plusClicked = () => {
-        inputFile.current.click();
+    const initFileChooser = () => {
+        fileInputRef.current.click();
     }
-    const fileAdded = (event) => {
-        console.log('File Add')
-        const attachedFile = event.target.files[0];
-        const duplicateFile = files.filter(f => f.name === attachedFile.name)[0];
-        if (!!duplicateFile) {
+
+    const fileDropped = (event) => {
+        const {files} = event.dataTransfer;
+        fileAdded(files);
+    }
+
+    const fileChosen = (event) => {
+        fileAdded(event.target.files);
+    }
+
+    const fileAdded = (attachedFiles) => {
+        if (attachedFiles.length === 0) return;
+        console.log('Attached', attachedFiles)
+        const attachedFile = attachedFiles[0];
+        const duplicateFile = files.some(f => f.name === attachedFile.name);
+        if (duplicateFile) {
             console.log(`Duplicate file ${files.indexOf(duplicateFile)}`)
+            alert('Duplicate file :(');
         }
         setFiles(oldFiles => [ ...oldFiles, attachedFile ]);
         console.log(files)
@@ -37,12 +41,11 @@ const FileUploadList = () => {
         setFiles(oldArray => oldArray.toSpliced(index, 1));
     };
 
-    console.log('render uploader')
     return (
         <FileUploadContainer>
             <div>Add files</div>
-            <FileListDisplay files={files} fileAddCallback={plusClicked} removeCallback={fileRemoved}/>
-            <input type={'file'} id={'file-input'} ref={inputFile} onChange={fileAdded} style={{display: 'none'}}/>
+            <FileListDisplay files={files} chooseFileCallback={initFileChooser} dropFileCallback={fileDropped} removeCallback={fileRemoved}/>
+            <input type={'file'} id={'file-input'} ref={fileInputRef} onChange={fileChosen} style={{display: 'none'}}/>
         </FileUploadContainer>
     )
 
