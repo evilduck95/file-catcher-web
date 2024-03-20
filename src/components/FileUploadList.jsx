@@ -30,7 +30,7 @@ const FileUploadList = () => {
         const attachedFile = attachedFiles[0];
         const duplicateFile = files.some(f => f.name === attachedFile.name);
         if (duplicateFile) {
-            console.log(`Duplicate file ${files.indexOf(duplicateFile)}`)
+            console.log(`Duplicate file ${files.indexOf(duplicateFile)}`);
             alert('Duplicate file :(');
         }
         setFiles(oldFiles => [ ...oldFiles, attachedFile ]);
