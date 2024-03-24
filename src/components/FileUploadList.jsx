@@ -1,12 +1,13 @@
 import React, {useRef, useState} from "react";
 import FileListDisplay from "./FileListDisplay";
 import styled from "styled-components";
+import {FILM} from "../util/fileTypes";
 
 const FileUploadContainer = styled.div`
     margin: 10px;
 `;
 
-const FileUploadList = () => {
+const FileUploadList = ({headerText = 'Add Files', fileType}) => {
 
     const [files, setFiles] = useState([]);
     const fileInputRef = useRef(null);
@@ -22,6 +23,8 @@ const FileUploadList = () => {
 
     const fileChosen = (event) => {
         fileAdded(event.target.files);
+        // Important to sidestep the default duplicate file protection (I need to show an alert)
+        event.target.value = null;
     }
 
     const fileAdded = (attachedFiles) => {
@@ -30,11 +33,10 @@ const FileUploadList = () => {
         const attachedFile = attachedFiles[0];
         const duplicateFile = files.some(f => f.name === attachedFile.name);
         if (duplicateFile) {
-            console.log(`Duplicate file ${files.indexOf(duplicateFile)}`);
             alert('Duplicate file :(');
+        } else {
+            setFiles(oldFiles => [...oldFiles, attachedFile]);
         }
-        setFiles(oldFiles => [ ...oldFiles, attachedFile ]);
-        console.log(files)
     };
 
     const fileRemoved = (index) => {
@@ -43,8 +45,8 @@ const FileUploadList = () => {
 
     return (
         <FileUploadContainer>
-            <div>Add files</div>
-            <FileListDisplay files={files} chooseFileCallback={initFileChooser} dropFileCallback={fileDropped} removeCallback={fileRemoved}/>
+            <div>{headerText}</div>
+            <FileListDisplay files={files} fileType={fileType} chooseFileCallback={initFileChooser} dropFileCallback={fileDropped} removeCallback={fileRemoved}/>
             <input type={'file'} id={'file-input'} ref={fileInputRef} onChange={fileChosen} style={{display: 'none'}}/>
         </FileUploadContainer>
     )

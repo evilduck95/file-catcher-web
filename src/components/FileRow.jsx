@@ -1,8 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import {ImCloudUpload, ImCross} from "react-icons/im";
-import {processFilm, uploadFilm} from "../util/file-catcher-api.js";
+import {processFilm, processTvShow, uploadFilm, uploadTvShow} from "../util/file-catcher-api.js";
 import Spinner from "./Spinner";
+import {FILM, TV_SHOW} from "../util/fileTypes";
+import {upload} from "@testing-library/user-event/dist/upload";
 
 const iconSize = 30;
 
@@ -38,25 +40,25 @@ const ProgressBar = styled.div`
     opacity: 25%;
 `;
 
-const FileRow = ({index, file, removedCallback}) => {
+const FileRow = ({index, fileType, file, removedCallback}) => {
 
     const [progress, setProgress] = useState(0);
-    const [zipping, setZipping] = useState(false);
-
-    useEffect(() => {
-        if (progress === 100) setZipping(false);
-    }, [progress]);
 
     const pushFileToServer = () => {
-        setZipping(true);
-        uploadFilm(file, updateUploadProgress)
+        const isFilm = fileType === FILM;
+        const uploadFunc = isFilm ? uploadFilm : uploadTvShow;
+        const processFunc = isFilm ? processFilm : processTvShow;
+        console.log(`File is ${isFilm ? 'Film' : 'TV Show'}`);
+        uploadFunc(file, updateUploadProgress)
             .then(response => {
                 console.log(response)
-                const { jobId } = response.data;
-                processFilm(jobId);
+                const {jobId} = response.data;
+                processFunc(jobId);
             })
             .catch(error => {
-                alert('Something went wrong uploading, please try again later: ' + error);
+                setProgress(0);
+                const {errorMessage, fileName} = error.response.data;
+                alert(`Couldn't upload ${fileName}, "${errorMessage}"`);
             });
     };
 
@@ -72,7 +74,8 @@ const FileRow = ({index, file, removedCallback}) => {
             <ProgressBar id={'hello'} style={{width: `${progress}%`}}/>
             <div>{file.name}</div>
             {!uploading && <ButtonsContainer>
-                {zipping ? <Spinner/> : <ImCloudUpload className={'clickable-icon'} size={`${iconSize * 1.1}px`} onClick={pushFileToServer}/>}
+                {uploading ? <Spinner/> : <ImCloudUpload className={'clickable-icon'} size={`${iconSize * 1.1}px`}
+                                                         onClick={pushFileToServer}/>}
                 <ImCross className={'clickable-icon'} size={`${iconSize}px`} color={'crimson'}
                          onClick={() => removedCallback(index)}/>
             </ButtonsContainer>}

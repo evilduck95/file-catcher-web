@@ -41,7 +41,7 @@ const DragOverOverlay = styled.div`
     opacity: 25%;
 `;
 
-const FileListDisplay = ({files, chooseFileCallback, dropFileCallback, removeCallback}) => {
+const FileListDisplay = ({files, fileType, chooseFileCallback, dropFileCallback, removeCallback}) => {
 
     const listContainerRef = useRef(null);
     const dragOverlayRef = useRef(null);
@@ -99,10 +99,10 @@ const FileListDisplay = ({files, chooseFileCallback, dropFileCallback, removeCal
         <FilesListContainer ref={listContainerRef}>
             {draggingFile && <DragOverOverlay ref={dragOverlayRef}>
             </DragOverOverlay>}
-            {files.map((f, i) => (<FileRow key={i} index={i} file={f} removedCallback={fileRemoved}/>))}
+            {files.map((f, i) => (<FileRow key={i} fileType={fileType} index={i} file={f} removedCallback={fileRemoved}/>))}
             <div className={'d-grid gap-2'}>
                 <Button onClick={chooseFileCallback} variant={'outline-primary'}>
-                    <Instruction>Drop files here (Coming Soon!) or click to select</Instruction>
+                    <Instruction>Drop files here or click to select</Instruction>
                 </Button>
             </div>
         </FilesListContainer>
