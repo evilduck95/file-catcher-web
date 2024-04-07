@@ -1,5 +1,4 @@
 import axios from "axios";
-import JSZip from "jszip";
 
 const apiBaseUrl = 'http://localhost:8200';
 const filmsEndpoint = 'film';

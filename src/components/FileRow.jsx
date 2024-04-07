@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from "react";
-import styled, {keyframes} from "styled-components";
+import styled from "styled-components";
 import {ImCloudUpload, ImCross} from "react-icons/im";
 import {checkJob, processFilm, processTvShow, uploadFilm, uploadTvShow} from "../util/file-catcher-api.js";
 import Spinner from "./Spinner";
 import {FILM} from "../util/fileTypes";
-import {clear} from "@testing-library/user-event/dist/clear";
-import {upload} from "@testing-library/user-event/dist/upload";
 
 const iconSize = 30;
 

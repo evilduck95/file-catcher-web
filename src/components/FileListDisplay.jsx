@@ -2,7 +2,6 @@ import React, {useEffect, useRef, useState} from "react";
 import styled from "styled-components";
 import FileRow from "./FileRow";
 import {Button} from "react-bootstrap";
-import {checkJobs} from "../util/file-catcher-api.js";
 
 const FilesListContainer = styled.div`
     // Parent styles to allow overlay to respect boundaries.
