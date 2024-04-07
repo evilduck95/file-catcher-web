@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import styled from "styled-components";
 import FileRow from "./FileRow";
 import {Button} from "react-bootstrap";
+import {checkJobs} from "../util/file-catcher-api.js";
 
 const FilesListContainer = styled.div`
     // Parent styles to allow overlay to respect boundaries.
@@ -97,9 +98,17 @@ const FileListDisplay = ({files, fileType, chooseFileCallback, dropFileCallback,
 
     return (
         <FilesListContainer ref={listContainerRef}>
-            {draggingFile && <DragOverOverlay ref={dragOverlayRef}>
-            </DragOverOverlay>}
-            {files.map((f, i) => (<FileRow key={i} fileType={fileType} index={i} file={f} removedCallback={fileRemoved}/>))}
+            {draggingFile && <DragOverOverlay ref={dragOverlayRef}/>}
+            {files.map((f, i) => (
+                <FileRow
+                    key={i}
+                    fileType={fileType}
+                    index={i}
+                    file={f}
+                    removedCallback={fileRemoved}
+                />
+            ))}
+            {/*Add another display underneath that shows previously uploaded, saved jobs.*/}
             <div className={'d-grid gap-2'}>
                 <Button onClick={chooseFileCallback} variant={'outline-primary'}>
                     <Instruction>Drop files here or click to select</Instruction>
