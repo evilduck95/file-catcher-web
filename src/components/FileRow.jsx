@@ -55,6 +55,22 @@ const FileRow = ({index, fileType, file, removedCallback}) => {
     const [jobId, setJobId] = useState();
     const [jobState, setJobState] = useState('Pending');
 
+    const updateJobInStorage = (jobId, fileName, jobStatus) => {
+        const localStorageKey = `saved_${fileType}`;
+        const savedJobs = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+        const jobIndex = savedJobs.map(j => j.jobId).indexOf(jobId);
+        console.log('Found', jobIndex)
+        if (jobIndex > -1) {
+            let savedJob = savedJobs[jobIndex];
+            console.log('Saved Job', savedJob)
+            savedJob.jobStatus = jobStatus;
+        } else {
+            console.log('Pushing new job')
+            savedJobs.push({ jobId, fileName, jobStatus });
+        }
+        localStorage.setItem(localStorageKey, JSON.stringify(savedJobs));
+    }
+
     useEffect(() => {
         const interval = setInterval(() => {
             console.log(jobId, jobState);
@@ -62,6 +78,7 @@ const FileRow = ({index, fileType, file, removedCallback}) => {
                 checkJob(jobId).then(res => {
                     const {status} = res.data;
                     setJobState(status);
+                    updateJobInStorage(jobId, file.name, status);
                 });
             }
         }, 1000);
@@ -74,11 +91,6 @@ const FileRow = ({index, fileType, file, removedCallback}) => {
 
 
     const pushFileToServer = () => {
-        let savedJobs = JSON.parse(localStorage.getItem('saved_jobs'));
-        if (!savedJobs) {
-            savedJobs = {};
-            savedJobs[fileType] = {};
-        }
         const isFilm = fileType === FILM;
         const uploadFunc = isFilm ? uploadFilm : uploadTvShow;
         const processFunc = isFilm ? processFilm : processTvShow;
@@ -90,11 +102,7 @@ const FileRow = ({index, fileType, file, removedCallback}) => {
                 processFunc(jobId).then(
                     () => {
                         setJobId(jobId);
-                        savedJobs[fileType][jobId] = {
-                            fileName: file.name
-                        };
-                        console.log('Saving Jobs', savedJobs);
-                        localStorage.setItem('saved_jobs', JSON.stringify(savedJobs));
+                        updateJobInStorage(jobId, file.name, "Pending");
                     },
                     error => alert(`Failed process call for ${file.name}, Error: ${error}`)
                 );

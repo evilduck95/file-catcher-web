@@ -2,9 +2,15 @@ import React, {useRef, useState} from "react";
 import FileListDisplay from "./FileListDisplay";
 import styled from "styled-components";
 import {FILM} from "../util/fileTypes";
+import OldFilesDisplay from "./OldFilesDisplay";
 
 const FileUploadContainer = styled.div`
     margin: 10px;
+`;
+
+const BufferSpace = styled.div`
+    height: 10px;
+    position: relative;
 `;
 
 const FileUploadList = ({headerText = 'Add Files', fileType}) => {
@@ -47,6 +53,8 @@ const FileUploadList = ({headerText = 'Add Files', fileType}) => {
         <FileUploadContainer>
             <div>{headerText}</div>
             <FileListDisplay files={files} fileType={fileType} chooseFileCallback={initFileChooser} dropFileCallback={fileDropped} removeCallback={fileRemoved}/>
+            {/*<BufferSpace className={'buffer'}/>*/}
+            <OldFilesDisplay fileType={fileType}/>
             <input type={'file'} id={'file-input'} ref={fileInputRef} onChange={fileChosen} style={{display: 'none'}}/>
         </FileUploadContainer>
     )

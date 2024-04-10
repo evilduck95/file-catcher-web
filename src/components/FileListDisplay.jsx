@@ -5,7 +5,7 @@ import {Button} from "react-bootstrap";
 
 const FilesListContainer = styled.div`
     // Parent styles to allow overlay to respect boundaries.
-    float: left;
+    //float: left;
     position: relative;
 
     width: 400px;
@@ -96,24 +96,26 @@ const FileListDisplay = ({files, fileType, chooseFileCallback, dropFileCallback,
     }
 
     return (
-        <FilesListContainer ref={listContainerRef}>
-            {draggingFile && <DragOverOverlay ref={dragOverlayRef}/>}
-            {files.map((f, i) => (
-                <FileRow
-                    key={i}
-                    fileType={fileType}
-                    index={i}
-                    file={f}
-                    removedCallback={fileRemoved}
-                />
-            ))}
-            {/*Add another display underneath that shows previously uploaded, saved jobs.*/}
-            <div className={'d-grid gap-2'}>
-                <Button onClick={chooseFileCallback} variant={'outline-primary'}>
-                    <Instruction>Drop files here or click to select</Instruction>
-                </Button>
-            </div>
-        </FilesListContainer>
+        <>
+            <FilesListContainer ref={listContainerRef}>
+                {draggingFile && <DragOverOverlay ref={dragOverlayRef}/>}
+                {files.map((f, i) => (
+                    <FileRow
+                        key={i}
+                        fileType={fileType}
+                        index={i}
+                        file={f}
+                        removedCallback={fileRemoved}
+                    />
+                ))}
+                {/*Add another display underneath that shows previously uploaded, saved jobs.*/}
+                <div className={'d-grid gap-2'}>
+                    <Button onClick={chooseFileCallback} variant={'outline-primary'}>
+                        <Instruction>Drop files here or click to select</Instruction>
+                    </Button>
+                </div>
+            </FilesListContainer>
+        </>
     )
 };
 
