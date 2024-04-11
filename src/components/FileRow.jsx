@@ -49,11 +49,18 @@ const JobStateResult = styled.div`
     font-weight: bold;
 `;
 
-const FileRow = ({index, fileType, file, removedCallback, isSavedUpload = false, existingJobId}) => {
+const FileRow = ({
+                     index,
+                     fileType,
+                     file,
+                     removedCallback,
+                     isSavedUpload = false,
+                     existingJobId, existingJobState
+                 }) => {
 
     const [progress, setProgress] = useState(isSavedUpload ? 100 : 0);
     const [jobId, setJobId] = useState(existingJobId);
-    const [jobState, setJobState] = useState('Pending');
+    const [jobState, setJobState] = useState(existingJobState || 'Pending');
 
     const updateJobInStorage = (jobId, file, jobStatus) => {
         const localStorageKey = `saved_${fileType}`;
@@ -66,7 +73,7 @@ const FileRow = ({index, fileType, file, removedCallback, isSavedUpload = false,
             savedJob.jobStatus = jobStatus;
         } else {
             console.log('Pushing new job')
-            savedJobs.push({ jobId, file: { name: file.name }, jobStatus });
+            savedJobs.push({jobId, file: {name: file.name}, jobStatus});
             console.log('savedjobs', savedJobs, JSON.stringify(file))
         }
         localStorage.setItem(localStorageKey, JSON.stringify(savedJobs));
@@ -111,6 +118,7 @@ const FileRow = ({index, fileType, file, removedCallback, isSavedUpload = false,
             .catch(error => {
                 setProgress(0);
                 const {errorMessage, fileName} = error.response.data;
+                console.log(error)
                 alert(`Couldn't upload ${fileName}, "${errorMessage}"`);
             });
     };
@@ -160,9 +168,9 @@ const FileRow = ({index, fileType, file, removedCallback, isSavedUpload = false,
                         uploadComplete && pendingJobState && <Spinner/>
                     }
                     {!isSavedUpload && <ImCross className={'clickable-icon'}
-                              size={`${iconSize}px`}
-                              color={'crimson'}
-                              onClick={() => removed(index)}/>}
+                                                size={`${iconSize}px`}
+                                                color={'crimson'}
+                                                onClick={() => removed(index)}/>}
                 </ButtonsContainer>
             }
         </FileRowContainer>

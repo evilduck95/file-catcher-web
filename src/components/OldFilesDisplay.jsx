@@ -30,16 +30,17 @@ const OldFilesDisplay = ({fileType}) => {
     const localStorageKey = `saved_${fileType}`;
     const savedJobs = JSON.parse(localStorage.getItem(localStorageKey)) || [];
 
+    // TODO Add index to these as they're in a list.
     const displayFileInfo = (savedJob) => {
         return(
-            <FileRow file={savedJob.file} fileType={fileType} isSavedUpload={true} existingJobId={savedJob.jobId} />
+            <FileRow file={savedJob.file} fileType={fileType} isSavedUpload={true} existingJobId={savedJob.jobId} existingJobState={savedJob.jobStatus} />
         )
     };
 
     return(
         <DisplayContainer>
             <Header>Previous Uploads</Header>
-            {savedJobs.length === 0 && <PlaceholderRow>No jobs found</PlaceholderRow>}
+            {savedJobs.length === 0 && <PlaceholderRow>No Uploaded {fileType.replace('tv_show', 'TV Shows').replace('film', 'Films')} found</PlaceholderRow>}
             {savedJobs.length > 0 && savedJobs.map(f => displayFileInfo(f))}
         </DisplayContainer>
     );
