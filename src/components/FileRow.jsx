@@ -49,24 +49,25 @@ const JobStateResult = styled.div`
     font-weight: bold;
 `;
 
-const FileRow = ({index, fileType, file, removedCallback}) => {
+const FileRow = ({index, fileType, file, removedCallback, isSavedUpload = false, existingJobId}) => {
 
-    const [progress, setProgress] = useState(0);
-    const [jobId, setJobId] = useState();
+    const [progress, setProgress] = useState(isSavedUpload ? 100 : 0);
+    const [jobId, setJobId] = useState(existingJobId);
     const [jobState, setJobState] = useState('Pending');
 
-    const updateJobInStorage = (jobId, fileName, jobStatus) => {
+    const updateJobInStorage = (jobId, file, jobStatus) => {
         const localStorageKey = `saved_${fileType}`;
         const savedJobs = JSON.parse(localStorage.getItem(localStorageKey)) || [];
         const jobIndex = savedJobs.map(j => j.jobId).indexOf(jobId);
-        console.log('Found', jobIndex)
+        // console.log('file', file)
         if (jobIndex > -1) {
             let savedJob = savedJobs[jobIndex];
             console.log('Saved Job', savedJob)
             savedJob.jobStatus = jobStatus;
         } else {
             console.log('Pushing new job')
-            savedJobs.push({ jobId, fileName, jobStatus });
+            savedJobs.push({ jobId, file: { name: file.name }, jobStatus });
+            console.log('savedjobs', savedJobs, JSON.stringify(file))
         }
         localStorage.setItem(localStorageKey, JSON.stringify(savedJobs));
     }
@@ -78,7 +79,7 @@ const FileRow = ({index, fileType, file, removedCallback}) => {
                 checkJob(jobId).then(res => {
                     const {status} = res.data;
                     setJobState(status);
-                    updateJobInStorage(jobId, file.name, status);
+                    updateJobInStorage(jobId, file, status);
                 });
             }
         }, 1000);
@@ -102,7 +103,7 @@ const FileRow = ({index, fileType, file, removedCallback}) => {
                 processFunc(jobId).then(
                     () => {
                         setJobId(jobId);
-                        updateJobInStorage(jobId, file.name, "Pending");
+                        updateJobInStorage(jobId, file, "Pending");
                     },
                     error => alert(`Failed process call for ${file.name}, Error: ${error}`)
                 );
@@ -141,13 +142,14 @@ const FileRow = ({index, fileType, file, removedCallback}) => {
     }
     progressBarStyle.background = progressBarColor;
     const iconsShown = (uploading || uploadComplete) && !pendingJobState ? 1 : 2;
+    console.log('file', file)
     return (
         <FileRowContainer id={'file'}>
             <ProgressBar id={'hello'} style={progressBarStyle}/>
             <FileName>{file.name}</FileName>
             {uploadComplete && !pendingJobState && <JobStateResult>{jobState}</JobStateResult>}
             {
-                <ButtonsContainer style={{width: `${iconSize * (iconsShown * 1.1) + 10}px`}}>
+                <ButtonsContainer style={{width: `${!isSavedUpload * (iconSize * (iconsShown * 1.1) + 10)}px`}}>
                     {
                         !(uploading || uploadComplete) &&
                         <ImCloudUpload className={'clickable-icon'}
@@ -157,10 +159,10 @@ const FileRow = ({index, fileType, file, removedCallback}) => {
                     {
                         uploadComplete && pendingJobState && <Spinner/>
                     }
-                    <ImCross className={'clickable-icon'}
-                             size={`${iconSize}px`}
-                             color={'crimson'}
-                             onClick={() => removed(index)}/>
+                    {!isSavedUpload && <ImCross className={'clickable-icon'}
+                              size={`${iconSize}px`}
+                              color={'crimson'}
+                              onClick={() => removed(index)}/>}
                 </ButtonsContainer>
             }
         </FileRowContainer>
