@@ -3,6 +3,7 @@ import styled from "styled-components";
 import FileRow from "./FileRow";
 
 const DisplayContainer = styled.div`
+    background-color: ${props => props.theme.fileListDisplay.backgroundColor};
     min-height: 120px;
     margin-top: 10px;
     padding-bottom: 10px;

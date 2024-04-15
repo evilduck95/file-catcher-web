@@ -1,7 +1,13 @@
 import './App.css';
 import FileUploadList from "./components/FileUploadList";
 import {FILM, TV_SHOW} from "./util/fileTypes";
-import styled from "styled-components";
+import styled, {ThemeProvider} from "styled-components";
+import theme from "./util/theme";
+
+const AppContainer = styled.div`
+    background-color: ${props => props.theme.mainScreen.backgroundColor};
+    height: 100vh;
+`;
 
 const UploadersContainer = styled.div`
     width: 80%;
@@ -14,12 +20,14 @@ const UploadersContainer = styled.div`
 
 function App() {
     return (
-        <div className="App">
-            <UploadersContainer>
-                <FileUploadList headerText={'Films'} fileType={FILM}/>
-                <FileUploadList headerText={'TV Shows'} fileType={TV_SHOW}/>
-            </UploadersContainer>
-        </div>
+        <ThemeProvider theme={theme}>
+            <AppContainer className="App">
+                <UploadersContainer>
+                    <FileUploadList headerText={'Films'} fileType={FILM}/>
+                    <FileUploadList headerText={'TV Shows'} fileType={TV_SHOW}/>
+                </UploadersContainer>
+            </AppContainer>
+        </ThemeProvider>
     );
 }
 

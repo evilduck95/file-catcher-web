@@ -8,6 +8,7 @@ import {FILM} from "../util/fileTypes";
 const iconSize = 30;
 
 const FileRowContainer = styled.div`
+    background-color: ${props => props.theme.fileRow.backgroundColor};
     position: relative;
     display: flex;
     flex-direction: row;
@@ -42,6 +43,7 @@ const ProgressBar = styled.div`
 
 const FileName = styled.div`
     text-align: left;
+    color: ${props => props.theme.fileRow.textColor}
 `;
 
 const JobStateResult = styled.div`
@@ -153,7 +155,7 @@ const FileRow = ({
     console.log('file', file)
     return (
         <FileRowContainer id={'file'}>
-            <ProgressBar id={'hello'} style={progressBarStyle}/>
+            <ProgressBar style={progressBarStyle}/>
             <FileName>{file.name}</FileName>
             {uploadComplete && !pendingJobState && <JobStateResult>{jobState}</JobStateResult>}
             {

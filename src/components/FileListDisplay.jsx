@@ -6,10 +6,11 @@ import {Button} from "react-bootstrap";
 const FilesListContainer = styled.div`
     // Parent styles to allow overlay to respect boundaries.
     //float: left;
+    background-color: ${props => props.theme.fileListDisplay.backgroundColor};
     position: relative;
 
     //width: 400px;
-width: 100%;
+    width: 100%;
     min-height: 500px;
     display: flex;
     flex-direction: column-reverse;
@@ -22,10 +23,15 @@ width: 100%;
 
 const Instruction = styled.div`
     width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-style: italic;
+    color: ${props => props.theme.fileListDisplay.headerTextColor};
+    //display: flex;
+    //justify-content: space-between;
+    //align-items: center;
+    height: 40px;
+    font-size: x-large;
+    text-align: center;
+    border-bottom: black solid 1px;
+    //font-style: italic;
 `;
 
 const DragOverOverlay = styled.div`
@@ -109,12 +115,7 @@ const FileListDisplay = ({files, fileType, chooseFileCallback, dropFileCallback,
                         removedCallback={fileRemoved}
                     />
                 ))}
-                {/*Add another display underneath that shows previously uploaded, saved jobs.*/}
-                <div className={'d-grid gap-2'}>
-                    <Button onClick={chooseFileCallback} variant={'outline-primary'}>
-                        <Instruction>Drop files here or click to select</Instruction>
-                    </Button>
-                </div>
+                <Instruction>Drop files here or click to select</Instruction>
             </FilesListContainer>
         </>
     )

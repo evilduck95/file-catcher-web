@@ -8,6 +8,11 @@ const FileUploadContainer = styled.div`
     margin: 10px;
 `;
 
+const Header = styled.div`
+    color: ${props => props.theme.fileUploadList.headerTextColor};
+    font-size: x-large;
+`;
+
 const FileUploadList = ({headerText = 'Add Files', fileType}) => {
 
     const [files, setFiles] = useState([]);
@@ -46,8 +51,9 @@ const FileUploadList = ({headerText = 'Add Files', fileType}) => {
 
     return (
         <FileUploadContainer>
-            <div>{headerText}</div>
-            <FileListDisplay files={files} fileType={fileType} chooseFileCallback={initFileChooser} dropFileCallback={fileDropped} removeCallback={fileRemoved}/>
+            <Header>{headerText}</Header>
+            <FileListDisplay files={files} fileType={fileType} chooseFileCallback={initFileChooser}
+                             dropFileCallback={fileDropped} removeCallback={fileRemoved}/>
             {/*<BufferSpace className={'buffer'}/>*/}
             <OldFilesDisplay fileType={fileType}/>
             <input type={'file'} id={'file-input'} ref={fileInputRef} onChange={fileChosen} style={{display: 'none'}}/>
