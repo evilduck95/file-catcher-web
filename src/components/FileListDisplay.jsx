@@ -8,7 +8,8 @@ const FilesListContainer = styled.div`
     //float: left;
     position: relative;
 
-    width: 400px;
+    //width: 400px;
+width: 100%;
     min-height: 500px;
     display: flex;
     flex-direction: column-reverse;

@@ -1,16 +1,11 @@
 import React, {useRef, useState} from "react";
 import FileListDisplay from "./FileListDisplay";
 import styled from "styled-components";
-import {FILM} from "../util/fileTypes";
 import OldFilesDisplay from "./OldFilesDisplay";
 
 const FileUploadContainer = styled.div`
+    width: 500px;
     margin: 10px;
-`;
-
-const BufferSpace = styled.div`
-    height: 10px;
-    position: relative;
 `;
 
 const FileUploadList = ({headerText = 'Add Files', fileType}) => {

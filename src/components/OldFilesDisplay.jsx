@@ -3,12 +3,11 @@ import styled from "styled-components";
 import FileRow from "./FileRow";
 
 const DisplayContainer = styled.div`
-    width: 400px;
+    min-height: 120px;
     margin-top: 10px;
     padding-bottom: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
     align-items: center;
     border: solid black 1px;
 `;
@@ -18,6 +17,12 @@ const Header = styled.div`
     font-size: x-large;
     text-align: center;
     border-bottom: grey 1px solid;
+`;
+
+const ListContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 `;
 
 const PlaceholderRow = styled.div`
@@ -32,16 +37,19 @@ const OldFilesDisplay = ({fileType}) => {
 
     // TODO Add index to these as they're in a list.
     const displayFileInfo = (savedJob) => {
-        return(
-            <FileRow file={savedJob.file} fileType={fileType} isSavedUpload={true} existingJobId={savedJob.jobId} existingJobState={savedJob.jobStatus} />
+        return (
+            <FileRow file={savedJob.file} fileType={fileType} isSavedUpload={true} existingJobId={savedJob.jobId}
+                     existingJobState={savedJob.jobStatus}/>
         )
     };
 
-    return(
+    return (
         <DisplayContainer>
             <Header>Previous Uploads</Header>
-            {savedJobs.length === 0 && <PlaceholderRow>No Uploaded {fileType.replace('tv_show', 'TV Shows').replace('film', 'Films')} found</PlaceholderRow>}
-            {savedJobs.length > 0 && savedJobs.map(f => displayFileInfo(f))}
+            <ListContainer>
+                {savedJobs.length === 0 && <PlaceholderRow>No Uploaded {fileType.replace('tv_show', 'TV Shows').replace('film', 'Films')} found</PlaceholderRow>}
+                {savedJobs.length > 0 && savedJobs.map(f => displayFileInfo(f))}
+            </ListContainer>
         </DisplayContainer>
     );
 };
