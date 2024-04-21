@@ -17,20 +17,23 @@ const FilesListContainer = styled.div`
     justify-content: flex-end;
     align-items: center;
     padding-top: 10px;
-    border: solid black 1px;
+    border: solid black 10px;
+    border-top: solid #404040 10px;
+    border-left: solid #202020 10px;
 `;
 
 
-const Instruction = styled.div`
+const Heading = styled.div`
     width: 100%;
     color: ${props => props.theme.fileListDisplay.headerTextColor};
+    font-family: "Market Deco";
     //display: flex;
     //justify-content: space-between;
     //align-items: center;
     height: 40px;
-    font-size: x-large;
+    font-size: xx-large;
     text-align: center;
-    border-bottom: black solid 1px;
+    //border-bottom: black solid 1px;
     //font-style: italic;
 `;
 
@@ -115,7 +118,7 @@ const FileListDisplay = ({files, fileType, chooseFileCallback, dropFileCallback,
                         removedCallback={fileRemoved}
                     />
                 ))}
-                <Instruction>Drop files here or click to select</Instruction>
+                <Heading>{fileType === 'film' ? 'FILMS' : 'TV SHOWS'}</Heading>
             </FilesListContainer>
         </>
     )

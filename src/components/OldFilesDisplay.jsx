@@ -10,20 +10,30 @@ const DisplayContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: solid black 1px;
+    border: solid black 10px;
+    border-top: solid #404040 10px;
+    border-left: solid #202020 10px;
 `;
 
-const Header = styled.div`
+const Heading = styled.div`
     width: 100%;
-    font-size: x-large;
+    color: ${props => props.theme.fileListDisplay.headerTextColor};
+    font-family: "Market Deco";
+    //display: flex;
+    //justify-content: space-between;
+    //align-items: center;
+    height: 40px;
+    font-size: xx-large;
     text-align: center;
-    border-bottom: grey 1px solid;
+    //border-bottom: black solid 1px;
+    //font-style: italic;
 `;
 
 const ListContainer = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    width: 100%;
 `;
 
 const PlaceholderRow = styled.div`
@@ -46,7 +56,7 @@ const OldFilesDisplay = ({fileType}) => {
 
     return (
         <DisplayContainer>
-            <Header>Previous Uploads</Header>
+            <Heading>Previous Uploads</Heading>
             <ListContainer>
                 {savedJobs.length === 0 && <PlaceholderRow>No Uploaded {fileType.replace('tv_show', 'TV Shows').replace('film', 'Films')} found</PlaceholderRow>}
                 {savedJobs.length > 0 && savedJobs.map(f => displayFileInfo(f))}

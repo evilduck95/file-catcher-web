@@ -7,8 +7,8 @@ const theme = {
         headerTextColor: 'white'
     },
     fileListDisplay: {
-        backgroundColor: '#00AADD',
-        headerTextColor: 'white'
+        backgroundColor: 'white',
+        headerTextColor: 'red'
     },
     fileRow: {
         backgroundColor: '#F3F9D2',

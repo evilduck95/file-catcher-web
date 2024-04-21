@@ -9,6 +9,7 @@ const iconSize = 30;
 
 const FileRowContainer = styled.div`
     background-color: ${props => props.theme.fileRow.backgroundColor};
+    font-family: "Market Deco";
     position: relative;
     display: flex;
     flex-direction: row;
@@ -17,8 +18,9 @@ const FileRowContainer = styled.div`
     margin-top: 10px;
     padding: 5px 10px;
     text-align: center;
-    width: 95%;
-    border: dashed black 1px;
+    min-height: 45px;
+    width: 100%;
+    //border: dashed black 1px;
 `;
 
 const ButtonsContainer = styled.div`
@@ -42,8 +44,13 @@ const ProgressBar = styled.div`
 `;
 
 const FileName = styled.div`
+    max-width: 200px;
     text-align: left;
-    color: ${props => props.theme.fileRow.textColor}
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: ${props => props.theme.fileRow.textColor};
+    flex-basis: 60%;
 `;
 
 const JobStateResult = styled.div`
@@ -156,7 +163,7 @@ const FileRow = ({
     return (
         <FileRowContainer id={'file'}>
             <ProgressBar style={progressBarStyle}/>
-            <FileName>{file.name}</FileName>
+            <FileName>{file.name.replace(/\.(?:.(?!\.))+$/, '')}</FileName>
             {uploadComplete && !pendingJobState && <JobStateResult>{jobState}</JobStateResult>}
             {
                 <ButtonsContainer style={{width: `${!isSavedUpload * (iconSize * (iconsShown * 1.1) + 10)}px`}}>

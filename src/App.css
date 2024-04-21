@@ -3,3 +3,14 @@
 .clickable-icon {
   cursor: pointer;
 }
+
+
+@font-face {
+  font-family: "Evil Empire";
+  src: local("Evil Empire"), url(assets/fonts/Evil Empire.otf) format('opentype');
+}
+
+@font-face {
+  font-family: "Market Deco";
+  src: local("Market Deco"), url(assets/fonts/Market_Deco.ttf) format('truetype');
+}
