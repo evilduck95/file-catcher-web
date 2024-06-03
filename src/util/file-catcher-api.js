@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiBaseUrl = 'http://localhost:8200';
+const apiBaseUrl = process.env.REACT_APP_FILE_CATCHER_API_HOST;
 const filmsEndpoint = 'film';
 const tvShowsEndpoint = 'tv-show';
 const jobsEndpoint = 'job'

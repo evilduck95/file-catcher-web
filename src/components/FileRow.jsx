@@ -38,8 +38,8 @@ const ProgressBar = styled.div`
     // Max size
     height: 100%;
 
-    background: rgba(255, 255, 0, 0.5);
-    opacity: 25%;
+    background: rgb(255, 255, 0);
+    opacity: 75%;
     pointer-events: none;
 `;
 
@@ -98,7 +98,7 @@ const FileRow = ({
                     updateJobInStorage(jobId, file, status);
                 });
             }
-        }, 1000);
+        }, 5000);
         if (jobState !== 'Pending') {
             console.log(`Resolved ${jobState} state, stopping interval`);
             clearInterval(interval);
@@ -152,7 +152,7 @@ const FileRow = ({
             progressBarColor = 'rgba(0, 255, 0, 0.5)';
             break;
         case 'Unsuccessful':
-            progressBarColor = 'rgba(255, 0, 0, 0.5)';
+            progressBarColor = 'rgba(255, 0, 0, 0.25)';
             break;
         default:
             progressBarColor = 'rgba(255, 255, 0, 0.5)';

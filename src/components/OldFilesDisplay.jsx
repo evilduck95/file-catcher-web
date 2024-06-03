@@ -34,6 +34,29 @@ const ListContainer = styled.div`
     flex-direction: column;
     justify-content: space-around;
     width: 100%;
+    max-height: 220px;
+    
+    overflow-y: auto;
+    /* width */
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+        background: #FBFFF1;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        background: #940000;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+        background: #FFCA3A;
+    }
+    
 `;
 
 const PlaceholderRow = styled.div`
