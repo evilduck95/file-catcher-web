@@ -7,4 +7,4 @@ RUN npm run build
 FROM nginx:stable-alpine3.19-perl
 EXPOSE 80
 COPY default.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /usr/app/build /usr/share/nginx/html
+COPY --from=build /usr/app/build /usr/share/nginx/html/file-catcher
