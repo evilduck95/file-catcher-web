@@ -3,6 +3,7 @@ services:
   file-catcher-web:
     container_name: file-catcher-web
     build:
+      context: .
       dockerfile: ./Dockerfile
     ports:
-      - 3000:80
+      - 3001:80
