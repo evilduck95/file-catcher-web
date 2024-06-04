@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiBaseUrl = process.env.REACT_APP_FILE_CATCHER_API_HOST;
+const apiBaseUrl = 'https://evilduck95.net/api';
 const filmsEndpoint = 'film';
 const tvShowsEndpoint = 'tv-show';
 const jobsEndpoint = 'job'
