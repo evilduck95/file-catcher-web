@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import {ImCloudUpload, ImCross} from "react-icons/im";
-import {checkJob, processFilm, processTvShow, uploadFilm, uploadTvShow} from "../util/file-catcher-api.js";
+import {checkJob, processFile, uploadFileInChunks} from "../util/file-catcher-api.js";
 import Spinner from "./Spinner";
 import {FILM} from "../util/fileTypes";
 
@@ -66,7 +66,6 @@ const FileRow = ({
                      isSavedUpload = false,
                      existingJobId, existingJobState
                  }) => {
-
     const [progress, setProgress] = useState(isSavedUpload ? 100 : 0);
     const [jobId, setJobId] = useState(existingJobId);
     const [jobState, setJobState] = useState(existingJobState || 'Pending');
@@ -90,7 +89,6 @@ const FileRow = ({
 
     useEffect(() => {
         const interval = setInterval(() => {
-            console.log(jobId, jobState);
             if (jobId && jobState === 'Pending') {
                 checkJob(jobId).then(res => {
                     const {status} = res.data;
@@ -106,43 +104,33 @@ const FileRow = ({
         return () => clearInterval(interval);
     }, [jobId, jobState]);
 
+    useEffect(() => {
+        if (!!jobId && !isSavedUpload) {
+            processFile(jobId, fileType === FILM).catch(error => alert(`Failed process call for ${file.name}, Error: ${error}`));
+        }
+    }, [jobId]);
 
     const pushFileToServer = () => {
         const isFilm = fileType === FILM;
-        const uploadFunc = isFilm ? uploadFilm : uploadTvShow;
-        const processFunc = isFilm ? processFilm : processTvShow;
-        console.log(`File is ${isFilm ? 'Film' : 'TV Show'}`);
-        uploadFunc(file, updateUploadProgress)
-            .then(response => {
-                console.log(response)
-                const {jobId} = response.data;
-                processFunc(jobId).then(
-                    () => {
-                        setJobId(jobId);
-                        updateJobInStorage(jobId, file, "Pending");
-                    },
-                    error => alert(`Failed process call for ${file.name}, Error: ${error}`)
-                );
-            })
-            .catch(error => {
-                setProgress(0);
-                const {errorMessage, fileName} = error.response.data;
-                console.log(error)
-                alert(`Couldn't upload ${fileName}, "${errorMessage}"`);
-            });
+        console.log(`Uploading ${file.name}`);
+        uploadFileInChunks(file, updateUploadProgress, isFilm).then(() => {
+            setJobId(file.name);
+        });
     };
 
     const removed = (index) => {
-        console.log("click", index)
         removedCallback(index);
     }
 
-    const updateUploadProgress = ({progress}) => {
-        setProgress(progress * 100);
+    const updateUploadProgress = (newBytesSent, totalBytes) => {
+        setProgress(prevProgress => {
+            const additionalProgress = (newBytesSent / totalBytes) * 100;
+            return (prevProgress + additionalProgress);
+        });
     };
 
     const uploading = progress > 0 && progress < 100;
-    const uploadComplete = progress === 100;
+    const uploadComplete = progress >= 100;
     const pendingJobState = jobState === 'Pending';
 
     const progressBarStyle = {width: `${progress}%`};
@@ -159,7 +147,7 @@ const FileRow = ({
     }
     progressBarStyle.background = progressBarColor;
     const iconsShown = (uploading || uploadComplete) && !pendingJobState ? 1 : 2;
-    console.log('file', file)
+    // console.log(bytesSent, progress);
     return (
         <FileRowContainer id={'file'}>
             <ProgressBar style={progressBarStyle}/>
