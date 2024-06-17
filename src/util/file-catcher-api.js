@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiBaseUrl = 'http://localhost:8200';
+const apiBaseUrl = 'https://evilduck95.net/api';
 const filmsEndpoint = 'film';
 const tvShowsEndpoint = 'tv-show';
 const jobsEndpoint = 'job'
